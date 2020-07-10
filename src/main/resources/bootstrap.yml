@@ -22,11 +22,11 @@ spring:
 spring:
   profiles: local
 
-#  rabbitmq:
-#    host: localhost
-#    port: 5672
-#    username: admin
-#    password: adminSecret
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: adminSecret
 
   cloud:
     config:
@@ -34,42 +34,28 @@ spring:
     stream:
       bindings:
         input:
-          destination: mgmt
-          group: mgmt-group
-          binder: msa2_rabbit
-      binders:
-        msa2_rabbit:
-          type: rabbit
-          environment:
-            spring:
-              rabbitmq:
-                host: localhost
-                port: 5672
-                username: admin
-                password: adminSecret
-                virtual-host: /
+          destination: msa2.mgmt
 
   jpa:
     hibernate:
       ddl-auto: update
 
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3308/book?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+    username: book
+    password: koscom
   #  h2:
   #    console:
   #      enabled: true
   #      settings:
   #        web-allow-others: true
-
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3307/todo?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
-    username: todo
-    password: koscom
-
-#  datasource:
-#    driver-class-name: org.h2.Driver
-#    url: jdbc:h2:mem:todo
-#    username: todo
-#    password: koscom
+  #
+  #  datasource:
+  #    driver-class-name: org.h2.Driver
+  #    url: jdbc:h2:mem:todo
+  #    username: todo
+  #    password: koscom
 
 security:
   swagger:
@@ -77,3 +63,9 @@ security:
   oauth2:
     jwt:
       signkey: jmworksJwtSecret
+
+s3:
+  endpoint: https://msa2-minio.k8s.kpaasta.io
+  accessKey: JMWorks
+  secretKey: JMWorksSecret
+  bucket: bucket-download
