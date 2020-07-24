@@ -7,7 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class UserCommand {
-    String oper;
-    Long id;
+public class MessageResponse {
+    private String message;
 }

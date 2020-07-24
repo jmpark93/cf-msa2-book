@@ -1,0 +1,15 @@
+---
+applications:
+  - name: cf-msa2-book
+    memory: 1G
+    instances: 1
+    buildpacks:
+      - java_buildpack
+    path: ./build/libs/book-0.0.1-SNAPSHOT.war
+    env:
+      JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 11.+}}'
+      SPRING_PROFILES_ACTIVE: dev
+    services:
+      - msa2-book
+    routes:
+      - route: msa2-book.cf.intl

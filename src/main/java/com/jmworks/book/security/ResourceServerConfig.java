@@ -18,7 +18,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 
                 .authorizeRequests()
-//                .antMatchers("/api/book/**").hasAnyRole("USER", "AdMIN")
+                .antMatchers("/api/books/**").hasAnyRole("USER", "AdMIN")
                 .anyRequest().authenticated();
     }
 }

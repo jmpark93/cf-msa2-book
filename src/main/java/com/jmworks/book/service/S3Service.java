@@ -37,19 +37,19 @@ public class S3Service {
         omd.setContentLength(file.getSize());
         omd.setHeader("filename", file.getOriginalFilename());
 
-        s3Client.putObject( new PutObjectRequest( bucket, toFileName + "." + extention , file.getInputStream(), omd));
+        s3Client.putObject(new PutObjectRequest(bucket, toFileName + "." + extention, file.getInputStream(), omd));
 
         accessURL = toFileName + "." + extention;
-        System.out.println( accessURL );
+        System.out.println(accessURL);
 
         return accessURL;
     }
 
     public void deleteFile(String imageURL) {
-        s3Client.deleteObject( bucket, imageURL);
+        s3Client.deleteObject(bucket, imageURL);
     }
 
-    // prefix --> userID ...
+    // prefix --> userID-book
     public void deleteFiles(String prefix) {
         ListObjectsRequest request = new ListObjectsRequest()
                 .withBucketName(bucket)
@@ -58,16 +58,14 @@ public class S3Service {
         while (true) {
             ObjectListing listing = s3Client.listObjects(request);
             String[] keys = listing.getObjectSummaries().stream().map(S3ObjectSummary::getKey).toArray(String[]::new);
-//            for (String key : keys) {
-//                logger.info("delete s3://{}/{}", bucket, key);
-//            }
-//            retryExecutor()
-//                    .retryIf(e -> e instanceof AmazonServiceException)
-//                    .run(() -> s3Client.deleteObjects(new DeleteObjectsRequest(bucket).withKeys(keys)));
+            for (String key : keys) {
+                System.out.println("will be deleted --> " + bucket + "/" + key);
+            }
+            s3Client.deleteObjects(new DeleteObjectsRequest(bucket).withKeys(keys));
 
-//            if (listing.getNextMarker() == null) {
+            if (listing.getNextMarker() == null) {
                 break;
-//                }
+            }
         }
     }
 }
